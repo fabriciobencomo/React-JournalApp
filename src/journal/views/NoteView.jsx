@@ -1,24 +1,47 @@
 import { SaveOutlined } from "@mui/icons-material"
 import { Button, Grid, TextField, Typography } from "@mui/material"
 import { ImageGallery } from "../components/ImageGallery"
+import { useDispatch, useSelector } from "react-redux"
+import { useForm } from '../../hooks/useForm'
+import { useEffect, useMemo } from "react"
+import { setActiveNote } from "../../store/journal/journalSlice"
+import { startSavingNote } from "../../store/journal/thunks"
 
 export const NoteView = () => {
+
+  const dispatch = useDispatch()
+  const {active:note} = useSelector( state => state.journal)
+  const {title, body, date, onInputChange, formState} = useForm( note )
+
+  const dateString = useMemo(() => {
+    const newDate = new Date(date)
+    return newDate.toUTCString()
+  }, [date])
+
+  useEffect(() => {
+    dispatch(setActiveNote(formState))
+  }, [formState])
+  
+  const onSaveNote = () => {
+    dispatch(startSavingNote())
+  }
+
   return (
     <Grid container direction='row' justifyContent='space-between' alignItems='center' sx={{mb:1, }} className='animate__animated animate__fadeIn animate__faster'>
       <Grid item>
         <Typography fontSize={39} fontWeight='light'>
-          28 de Agosoto de 2023
+          {dateString}
         </Typography>
       </Grid>
       <Grid item>
-        <Button color="primary" sx={{p:2}}>
+        <Button color="primary" sx={{p:2}} onClick={onSaveNote}>
           <SaveOutlined sx={{fontSize: 30, mr:1}}></SaveOutlined>
           Guardar
         </Button>
       </Grid>
       <Grid container>
-        <TextField type="text" placeholder="Ingrese Un Titulo" variant="filled" fullWidth sx={{border:'none', mb:1}} label='titulo'></TextField>
-        <TextField type="text" placeholder="Descripcion" multiline variant="filled" fullWidth minRows={5}></TextField>
+        <TextField type="text" placeholder="Ingrese Un Titulo" variant="filled" fullWidth sx={{border:'none', mb:1}} label='titulo' name="title" value={title} onChange={ onInputChange }></TextField>
+        <TextField type="text" placeholder="Descripcion" multiline variant="filled" fullWidth minRows={5} name="body" value={body} onChange={ onInputChange } ></TextField>
       </Grid>
       <ImageGallery></ImageGallery>
     </Grid>
