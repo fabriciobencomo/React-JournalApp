@@ -19,8 +19,8 @@ export const RegisterPage = () => {
   const [formSubmitted, setformSubmitted] = useState(false)
 
   const formData = {
-    email: 'ejemplo@ejemplo.com',
-    password: '123',
+    email: 'example@example.com',
+    password: '',
     displayName: ''
   }
 
@@ -35,20 +35,20 @@ export const RegisterPage = () => {
     event.preventDefault()
     setformSubmitted(true)
     if(!isFormValid) return
-    dispatch(startCreatingUserWithEmailAndPassword(formState))
+    // dispatch(startCreatingUserWithEmailAndPassword(formState))
   }
   return (
       <AuthLayout title='Register'>
         <form onSubmit={(e) => onSubmit(e)} className='animate__animated animate__fadeIn animate__faster'>
           <Grid container>
             <Grid item xs={12} mt={2}>
-              <TextField label="Nombre" placeholder='Name' type='text'  fullWidth name='displayName' value={displayName} onChange={onInputChange} error={!!displayNameValid && formSubmitted} helperText={displayNameValid} ></TextField>
+            <TextField label="Nombre" placeholder='Name' type='text'  fullWidth name='displayName' onChange={onInputChange} error={!!displayNameValid && formSubmitted} helperText={displayNameValid} ></TextField>
             </Grid>
             <Grid item xs={12} mt={2}>
-              <TextField label="Correo" placeholder='google.com' type='email'  fullWidth name='email' value={email} onChange={onInputChange} error={!!emailValid && formSubmitted} helperText={emailValid} ></TextField>
+              <TextField label="Correo" placeholder='google.com' type='email'  fullWidth name='email'  onChange={onInputChange} error={!!emailValid && formSubmitted} helperText={emailValid} ></TextField>
             </Grid>
             <Grid item xs={12} mt={2}>
-              <TextField label="Password"  type='password'  fullWidth name='password' value={password} onChange={onInputChange} error={!!passwordValid && formSubmitted} helperText={passwordValid} ></TextField>
+              <TextField label="Password"  type='password'  fullWidth name='password'  onChange={onInputChange} error={!!passwordValid && formSubmitted} helperText={passwordValid} ></TextField>
             </Grid>
             <Grid container spacing={2} sx={{marginBottom: 2, marginTop:1}}>
               <Grid item xs={12} display={ !!errorMsg ? '' : 'none'}>

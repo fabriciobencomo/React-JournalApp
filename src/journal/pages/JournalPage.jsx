@@ -6,15 +6,19 @@ import { NoteView } from "../views/NoteView"
 import { useDispatch, useSelector } from "react-redux"
 import { startNewNote } from "../../store/journal/thunks"
 import { savingNewNote } from "../../store/journal/journalSlice"
+import Swal from "sweetalert2"
 
 
 
 export const JournalPage = () => {
 
-  const {isSaving, active} = useSelector(state => state.journal)
+  const {isSaving, active, notes} = useSelector(state => state.journal)
   const dispatch = useDispatch()
 
   const onClickNewNote = () => {
+    if(notes.length >= 50){
+      return Swal.fire('Error al Crear Nota', 'Para proteger la memoria de la base de datos no puede añadir mas de 50 notas', 'error')
+    }
     dispatch(savingNewNote())
     dispatch(startNewNote())
   }
